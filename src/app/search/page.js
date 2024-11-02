@@ -77,7 +77,7 @@ export default function Search() {
     //   [pokemon]
     // );
     return (
-        <main>
+        <main className={pokeStyles.main}>
             <h1>Pokemon Page</h1>
             <div className={pokeStyles.search}>
                 <input
@@ -86,11 +86,14 @@ export default function Search() {
                     name="search"
                     value={searchTerm}
                     onChange={changeSearchTerm}
+                    placeholder="Search Pokemon"
                 />
                 <input type="button" value="Search" onClick={searchForPokemonByName} />
             </div>
-            <h3>{pokemon.name}</h3>
-            <img src={pokemon.sprites.front_default} />
+            {pokemon.name && <h3>{pokemon.name}</h3>}
+            {pokemon.sprites.front_default && (
+                <img src={pokemon.sprites.front_default} alt={pokemon.name} />
+            )}
         </main>
     );
 }
