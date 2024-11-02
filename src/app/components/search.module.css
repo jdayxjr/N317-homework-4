@@ -1,0 +1,16 @@
+.search{
+    width: 100%;
+    margin: 50px;
+}
+.search  input {
+   width:200px;
+   height:50px;
+   font-size: 32px;
+   border:  dashed 2px yellow;
+   color: blue;
+}
+
+.search input[type="search"]{
+    width: 400px; 
+}
+ 
