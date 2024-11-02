@@ -78,7 +78,7 @@ export default function Search() {
     // );
     return (
         <main className={pokeStyles.main}>
-            <h1>Pokemon Page</h1>
+            <h1>Pokemon Search:</h1>
             <div className={pokeStyles.search}>
                 <input
                     type="search"
