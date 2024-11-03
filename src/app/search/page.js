@@ -1,98 +1,111 @@
 "use client";
-
+import { useState } from "react";
 import pokeStyles from "./search.module.css";
-import { useEffect, useState } from "react";
 
-// Pokemon data
-/**
- * @typedef {Object} pokemonApiObject This is the object for a pokemon
- * @prop {String} name Name of pokemon
- * @prop {Number} id Id of pokemon
- * @prop {Object} sprites Object with all sprite references
- * @prop {String} sprites.front_default Default front image for sprite
- * @prop {Number} height Height of pokemon. Multiply by 10 to make it in cms.
- * @prop {Number} weight Weight of pokemon. Divide by 10 to make it kg.
- */
-
-export default function Search() {
-    /**
-     * @type {[pokemonApiObject, Function]}
-     */
-    const [pokemon, setPokemon] = useState({ sprites: {} });
-    /**
-     * @type {[String, Function]}
-     */
+export default function PokemonPage() {
     const [searchTerm, setSearchTerm] = useState("");
+    const [pokemonData, setPokemonData] = useState(null);
+    const [errorMessage, setErrorMessage] = useState("");
 
-    const [pokeEncounters,
-        setPokemonEncounters] = useState([]);
-
-    console.log("pokemonEncounters", pokeEncounters);
-
-    const fetchPokemonEncounters = async () => {
-        const response = await fetch('https://pokeapi.co/api/v2/pokemon?limit=5');
-        const data = await response.json();
-        setPokemonEncounters(data.results);
-    };
-
-    useEffect(() => {
-        fetchPokemonEncounters();
-    }, []);
-
-
-    function changeSearchTerm(e) {
-        setSearchTerm(e.currentTarget.value);
+    function changeSearchTerm(event) {
+        setSearchTerm(event.target.value);
     }
 
-    async function searchForPokemonByName() {
-        try {
-            const rawData = await fetch(
-                `https://pokeapi.co/api/v2/pokemon/${searchTerm}`
-            );
-            const pokeDataFormatted = await rawData.json();
+    async function searchForPokemon() {
+        if (!searchTerm) return;
 
-            setPokemon(pokeDataFormatted);
+        setErrorMessage(""); // Clear any previous errors
+        setPokemonData(null); // Clear previous results
+
+        try {
+            // Try searching by Pokémon name first
+            let response = await fetch(`https://pokeapi.co/api/v2/pokemon/${searchTerm.toLowerCase()}`);
+            if (response.ok) {
+                const data = await response.json();
+                setPokemonData({
+                    type: "pokemon",
+                    name: data.name,
+                    img: data.sprites.front_default,
+                    id: data.id,
+                });
+                return;
+            }
+
+            // If not found by name, try searching by egg group
+            response = await fetch(`https://pokeapi.co/api/v2/egg-group/${searchTerm.toLowerCase()}`);
+            if (response.ok) {
+                const data = await response.json();
+                setPokemonData({
+                    type: "egg-group",
+                    name: data.name,
+                    species: data.pokemon_species,
+                });
+                return;
+            }
+
+            // If not found by egg group, try searching by habitat
+            response = await fetch(`https://pokeapi.co/api/v2/pokemon-habitat/${searchTerm.toLowerCase()}`);
+            if (response.ok) {
+                const data = await response.json();
+                setPokemonData({
+                    type: "habitat",
+                    name: data.name,
+                    pokemon: data.pokemon_species,
+                });
+                return;
+            }
+
+            // If nothing was found, set an error
+            setErrorMessage("No Pokémon, egg group, or habitat found with that name.");
         } catch (error) {
-            setPokemon({ name: searchTerm, sprites: {} });
+            setErrorMessage("An error occurred while searching. Please try again.");
         }
     }
 
-    // useEffect(function () {
-    //   if (pokemon.id) {
-    //     fetch(
-    //       `https://pokeapi.co/api/v2/pokemon/${pokemon.id}/encounters`
-    //     ).then((rawData) => {
-    //       return rawData.json();
-    //     })
-    //       .then((pokeEncounters) => {
-
-    //         console.log(pokeEncounters);
-
-    //       })
-    //       .catch((e) => {
-    //         console.warn(e);
-    //       });
-    //   }
-    // },
-    //   [pokemon]
-    // );
     return (
         <main className={pokeStyles.main}>
-            <h1>Pokemon Search:</h1>
+            <h1>Pokemon Search</h1>
             <div className={pokeStyles.search}>
                 <input
                     type="search"
-                    id="search"
-                    name="search"
                     value={searchTerm}
                     onChange={changeSearchTerm}
-                    placeholder="Search Pokemon"
+                    placeholder="Search by name, egg group, or habitat"
                 />
-                <input type="button" value="Search" onClick={searchForPokemonByName} />
+                <button onClick={searchForPokemon}>Search</button>
             </div>
-            {pokemon.name && <h3>{pokemon.name}</h3>}
-            {pokemon.sprites.front_default && (
-                <img src={pokemon.sprites.front_default} alt={pokemon.name} />
+
+            {/* Display Results */}
+            {errorMessage && <p>{errorMessage}</p>}
+
+            {pokemonData && pokemonData.type === "pokemon" && (
+                <div>
+                    <h3>{pokemonData.name}</h3>
+                    <img src={pokemonData.img} alt={pokemonData.name} />
+                    <p>ID: {pokemonData.id}</p>
+                </div>
+            )}
+
+            {pokemonData && pokemonData.type === "egg-group" && (
+                <div>
+                    <h3>Egg Group: {pokemonData.name}</h3>
+                    <ul>
+                        {pokemonData.species.map((species) => (
+                            <li key={species.name}>{species.name}</li>
+                        ))}
+                    </ul>
+                </div>
+            )}
+
+            {pokemonData && pokemonData.type === "habitat" && (
+                <div>
+                    <h3>Habitat: {pokemonData.name}</h3>
+                    <ul>
+                        {pokemonData.pokemon.map((species) => (
+                            <li key={species.name}>{species.name}</li>
+                        ))}
+                    </ul>
+                </div>
             )}
         </main>
     );

@@ -12,26 +12,24 @@ export default function Home() {
       pokeData.getNumberOfPokemon();
     }
     if (!pokeData.randomPokemon.length) {
-      pokeData.getRandomPokemon(5);
+      pokeData.getRandomPokemon(5); // Fetch 5 random Pokémon
     }
   }, [pokeData]);
 
-  const randomPokemonListJsx = pokeData.randomPokemon.map(function (pokemon) {
+  const randomPokemonListJsx = pokeData.randomPokemon.map((pokemon) => {
     const quickInfo = pokeData.getPokemonQuickInfo(pokemon);
     return (
       <PokemonCard
         key={`poke-card-${quickInfo.id}`}
-        name={quickInfo.name}
-        img={quickInfo.img}
-        types={quickInfo.types}
+        pokemon={quickInfo} // Pass the entire object instead of separate props
       />
     );
   });
 
   return (
     <main className={homeStyles.mainContent}>
-      <h1>POKEMON SHOWCASE</h1>
-      <section>{randomPokemonListJsx}</section>
+      <div className={homeStyles.homePageHeader}></div>
+      <section>{randomPokemonListJsx.length > 0 ? randomPokemonListJsx : <p>Loading Pokémon...</p>}</section>
     </main>
   );
 }

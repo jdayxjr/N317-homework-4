@@ -1,0 +1,122 @@
+.pokeCard {
+  height: 400px;
+  width: 300px;
+  background-color: #b0ccd5;
+}
+
+.pokeCard img {
+  height: calc(400px - 125px);
+}
+
+.pokeCard div {
+  height: 125px;
+  background-color: #a8ebff;
+}
+
+.pokeCard div h4 {
+  font-size: 20px;
+}
+
+
+.card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 16px;
+  width: 200px;
+  text-align: center;
+  background-color: #f9f9f9;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.imageContainer {
+  width: 100px;
+  height: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  margin-bottom: 12px;
+}
+
+.pokemonImage {
+  max-width: 100%;
+  max-height: 100%;
+}
+
+.name {
+  font-size: 1.25em;
+  margin: 8px 0;
+  color: #333;
+}
+
+.types {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 12px;
+}
+
+.typeBadge {
+  padding: 4px 8px;
+  background-color: #e0e0e0;
+  border-radius: 12px;
+  font-size: 0.875em;
+  color: #555;
+}
+
+.favoriteButton {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.favoriteButton:hover {
+  background-color: #0056b3;
+}
+
+.isFavorite {
+  background-color: #ffc107;
+}
+
+.isFavorite:hover {
+  background-color: #e0a800;
+}
+
+/* src/app/components/Pokemon/PokemonCard.module.css */
+.card {
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 16px;
+  margin: 16px;
+  text-align: center;
+}
+
+.card img {
+  width: 100px; /* or any size you prefer */
+  height: auto;
+}
+
+.card button {
+  margin-top: 10px;
+  padding: 8px 16px;
+  background-color: #0070f3;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.card button:hover {
+  background-color: #005bb5;
+}
+
+/* .headerText{
+  letter-spacing: 5px;
+  color: #005bb5;
+} */

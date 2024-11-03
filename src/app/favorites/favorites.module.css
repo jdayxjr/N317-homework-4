@@ -1,0 +1,37 @@
+.main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    text-align: center;
+}
+
+.favoriteList {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.favoriteList img {
+    max-width: 150px;
+    border-radius: 8px;
+}
+
+/* src/app/favorites/favorites.module.css */
+.mainContent {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh; /* Full height */
+    background-color: #f0f0f0; /* Light background color */
+}
+
+.favoriteList {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center; /* Center items horizontally */
+    gap: 16px; /* Space between cards */
+}

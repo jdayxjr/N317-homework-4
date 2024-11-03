@@ -13,3 +13,22 @@
   column-gap: 20px;
   justify-items: center;
 }
+.homePageHeader{
+  background-image: url("./images/logo.png");
+
+  width: 800px;
+  height: 400px;
+  background-repeat: no-repeat;
+  align-items: center;
+  align-self: center;
+  justify-items: center;
+  margin: 0 auto;
+
+}
+
+.homePageHeaderWrapper{
+  background-color: blue;
+  width: 100%;
+  height: 400px;
+
+}
